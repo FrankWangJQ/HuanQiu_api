@@ -1,0 +1,191 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XHealthRecord/XAllergy/list/$patientXID
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XHealthRecord/XAllergy/list/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XHealthRecord/XProblem/list/100/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XHealthRecord/XProblem/list/100/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XHealthRecord/XProblem/list/110/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XHealthRecord/XProblem/list/110/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XHealthRecord/XImmunization/list/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XHealthRecord/XImmunization/list/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XHealthRecord/XFamilyHistory/list/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XHealthRecord/XFamilyHistory/list/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XHealthRecord/XPersonalHistory/list/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XHealthRecord/XPersonalHistory/list/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XAppointment/appointment/appointmentList/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XAppointment/appointment/appointmentList/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XProvider/provider/patient/4579/visitList
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/patient/$patientXID/visitList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XProvider/provider/complex/getProviderListByProviderXIDList
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            providerXIDList:
+            - $providerXID
+        method: POST
+        url: /XHealthWebService/XProvider/provider/complex/getProviderListByProviderXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XVisitReason/visitReason/list/getVisitReasonsByVisitXIDList
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+        - 21408
+        - 21385
+        - 21381
+        - 21271
+        - 21262
+        - 21237
+        - 21232
+        - 21215
+        - 21212
+        - 21143
+        method: POST
+        url: /XHealthWebService/XVisitReason/visitReason/list/getVisitReasonsByVisitXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XReferral/referral/patientReferralList/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XReferral/referral/patientReferralList/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: /micro-stage/XHealthWebService/XMedicationOrder/medicationOrder/electronicPrescriptionList/4579
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XMedicationOrder/medicationOrder/electronicPrescriptionList/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
