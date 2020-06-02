@@ -1,0 +1,45 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 新建患者
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            birthDay: '2020-05-24'
+            familyName: ''
+            fullName: ${random_name()}
+            gender: 4
+            givenName: ''
+            mobileNumber: '${newPhoneNumber()}'
+        method: POST
+        url: /XHealthWebService/XProvider/provider/patient/
+    extract:
+    -   newPatientNameCN: content.data.nameCN
+    -   newPatientUserXID: content.data.userXID.stringValue
+    -   newPatientPhone: content.data.loginMobileNumber
+    -   newPatientXID: content.data.XID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

@@ -1,0 +1,42 @@
+#name: 医生创建患者
+#variables:  #对应测试环境数据
+#    mobileNumber: 18511086263
+#    securityCode: qwer1234
+#request:
+#    headers:
+#        Content-Type: application/json
+#    json:
+#        mobileNumber: $mobileNumber
+#        securityCode: $securityCode
+#    method: POST
+#    url: /XHealthWebService/XAuthentication/XProviderAuthentication/login
+#validate:
+#-   eq:
+#    - content.responseText
+#    - 登陆成功
+-   name: 医生创建患者
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            birthDay: '2020-05-24'
+            familyName: ''
+            fullName: ${random_name()}
+            gender: 4
+            givenName: ''
+            mobileNumber: '${newPhoneNumber()}'
+        method: POST
+        url: /XHealthWebService/XProvider/provider/patient/
+#    extract:
+#    -   newPatientNameCN: content.data.nameCN
+#    -   newPatientUserXID: content.data.userXID.stringValue
+#    -   newPatientPhone: content.data.loginMobileNumber
+#    -   newPatientXID: content.data.XID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

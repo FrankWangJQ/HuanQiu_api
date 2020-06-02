@@ -1,0 +1,76 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 患者搜索关键字：$searchData
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            freeClinic: false
+            hospitalID: ''
+            licenseID: ''
+            maxPrice: ''
+            minPrice: ''
+            page: 0
+            queryCriteria: $searchData
+            sortID: ''
+            specialtyID: ''
+        method: POST
+        url: /XHealthWebService/XProvider/provider/newSearchResult/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 搜索结果页展示医生列表--显示医生接诊量
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+        - $providerXID
+        method: POST
+        url: /XHealthWebService/XProvider/provider/list/consultationsCounter
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 根据医生ID获取医生详情接口
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            providerXIDList:
+            - $providerXID
+        method: POST
+        url: /XHealthWebService/XSpecialty/providerExpertise/complex/getProviderExpertiseListByProviderXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

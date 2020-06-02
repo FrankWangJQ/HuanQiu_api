@@ -1,0 +1,40 @@
+#name: get token2
+#variables:  #对应测试环境数据
+#    mobileNumber: 18511086263
+#    securityCode: qwer1234
+#    doctorXID: 1048670     #王建清医生
+#    meishengmang: 1048605  #美圣芒机构组
+#request:
+#    headers:
+#        Content-Type: application/json
+#    json:
+#        mobileNumber: $mobileNumber
+#        securityCode: $securityCode
+#    method: POST
+#    url: /XHealthWebService/XAuthentication/XProviderAuthentication/login
+#extract:
+#    base_token: content.data.token
+#validate:
+#    - eq: ["responseText", 登陆成功]
+#
+#name: 获取机构组列表
+#request:
+#    headers:
+#        TOKEN: $base_token
+#    method: GET
+#    url: /XHealthWebService/XStaff/organizationUnit/tree/$doctorXID
+#validate:
+#    - eq: ["responseCode", '200']
+#
+name: 获取登录机构组下该医生的配置信息(获取机构组token)
+variables:  #对应测试环境数据
+    meishengmang: 1048605  #美圣芒机构组
+request:
+    headers:
+        TOKEN: $base_token
+    method: GET
+    url: /XHealthWebService/XAuthentication/XProviderAuthentication/token/$providerUserXID/$meishengmang
+validate:
+-   eq:
+    - content.responseCode
+    - 200

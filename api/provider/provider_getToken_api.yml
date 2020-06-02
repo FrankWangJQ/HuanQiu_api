@@ -1,0 +1,13 @@
+name: 获取登陆token
+request:
+    headers:
+        Content-Type: application/json
+    json:
+        mobileNumber: $name
+        securityCode: $password
+    method: POST
+    url: /XHealthWebService/XAuthentication/XProviderAuthentication/login
+validate:
+-   eq:
+    - content.responseText
+    - 登陆成功

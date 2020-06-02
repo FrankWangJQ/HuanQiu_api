@@ -1,0 +1,248 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者端升级内容接口
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XAppVersion/versionUpdateInfo/appKey/patientythg.iOS/currentVersionNumber/5.0.0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 是否开启智能导航
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XVisit/triage/complex/isIntelligenceGuidanceEnabled
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取推荐医生列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/recommend/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者端消息中心未读消息数
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XMessage/patient/$patientXID/count/unread
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者端首页banner信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XBanner/mobileBanner/list/400300054
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者首页义诊专区第一页（20条）医生数据
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            pageIndex: '1'
+            pageSize: '20'
+        url: /XHealthWebService/XFreeClinic/organizationGroup/$meishengmang/provider/pagedList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取ICON配置信息
+    request:
+        headers:
+            Content-Type: application/json
+            OrganizationUnitXID: $meishengmang
+            TOKEN: $token
+        json:
+        - '502500003'
+        - '501800001'
+        - '503200001'
+        - '501800003'
+        - '500500012'
+        - '503200002'
+        - '500500016'
+        method: POST
+        url: /XHealthWebService/XConfiguration/configuration/patient/complex/getConfigurationListByXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 医技预约开关
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProcedure/procedure/configuration/isProcedureOrderAppointmentEnabled
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 特色科室列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XOrganizationUnit/organizationGroup/$meishengmang/specificDepartment/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取首页菜单标题
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XConfiguration/configuration/MenuAliasConfiguration
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 体检预约开关
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPhysicalExam/physicalExam/organizationGroup/$patientXID/isPhysicalExamEnabled
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 通过定位获取机构组列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            location: 116.346303,39.938079
+        url: /XHealthWebService/XOrganizationUnit/organizationGroup/recommend/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 根据医生XID获取医生问诊数量(根据不同环境传该环境下医生的XID)
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json: #测试环境机构组二医生数据
+        - 4175
+        - 4130
+        - 4168
+        - 4112
+        - 4135
+        - 4120
+        - 4122
+        method: POST
+        url: /XHealthWebService/XProvider/provider/list/consultationsCounter
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 根据医生XID获取医生擅长（根据不同环境传该环境下医生的XID）
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            providerXIDList: #测试环境机构组二医生数据
+            - 4175
+            - 4130
+            - 4168
+            - 4112
+            - 4135
+            - 4120
+            - 4122
+        method: POST
+        url: /XHealthWebService/XSpecialty/providerExpertise/complex/getProviderExpertiseListByProviderXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 智能导诊配置开关
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XVisit/triage/complex/isIntelligenceGuidanceEnabled
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

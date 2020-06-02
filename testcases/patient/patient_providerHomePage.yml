@@ -1,0 +1,291 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生评价列表
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/0/true/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生微信主页url
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XProvider/provider/wechat/homePageUrl/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生配置信息
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XProvider/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生服务信息
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XProvider/providerService/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生是否被收藏
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatient/patient/favoriteProvider/status/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:  获取医生问诊数量？
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        json:
+        - '$providerXID'
+        method: POST
+        url: /XHealthWebService/XProvider/provider/list/consultationsCounter
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生服务类型？
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XProvider/providerService/provider/$providerXID/serviceType/500500001
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生擅长列表
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        json:
+            providerXIDList:
+            - $providerXID
+        method: POST
+        url: /XHealthWebService/XSpecialty/providerExpertise/complex/getProviderExpertiseListByProviderXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生服务类型？/500500002
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XProvider/providerService/provider/$providerXID/serviceType/500500002
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生服务类型？/500500003
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XProvider/providerService/provider/$providerXID/serviceType/500500003
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 点击医生主页右上角的收藏按钮
+    request:
+        data: ''
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: POST
+        url: /XHealthWebService/XPatient/patient/favoriteProvider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取问诊规则
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XConfiguration/configuration/visit/rules
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页评价纬度
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/0/false/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页好评率等
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/allRatingPercentage/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页评价主页评价内容
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/tag/list/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页评价列表
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/0/true/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页好评率等
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/allRatingPercentage/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页评价内容
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/tag/list/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生主页评价列表
+    request:
+        headers:
+            TOKEN: $token
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/5/true/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

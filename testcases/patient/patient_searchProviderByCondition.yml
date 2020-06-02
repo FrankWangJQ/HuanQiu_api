@@ -1,0 +1,102 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 根据条件筛选医生接口
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            freeClinic: false
+            hospitalID: $meishengmang
+            licenseID: ''
+            maxPrice: ''
+            minPrice: ''
+            page: 0
+            queryCriteria: ''
+            sortID: ''
+            specialtyID: ''
+        method: POST
+        url: /XHealthWebService/XProvider/provider/newSearchResult/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生问诊量
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+        - $providerXID
+        method: POST
+        url: /XHealthWebService/XProvider/provider/list/consultationsCounter
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生擅长
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            providerXIDList:
+            - $providerXID
+        method: POST
+        url: /XHealthWebService/XSpecialty/providerExpertise/complex/getProviderExpertiseListByProviderXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 根据医疗机构ID获取医生科室
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XSpecialty/specialty/listOrdered/$keshiID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 选择二级科室$specialtyXID
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XSpecialty/specialty/list/$specialtyXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

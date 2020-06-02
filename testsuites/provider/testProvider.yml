@@ -1,0 +1,23 @@
+
+config:
+    name: "testProvider"
+    base_url: "https://micro-stage.unihealths.com/micro-stage"
+
+testcases:  #将用例进行分层组装，参数化
+- #医生登陆
+    name: providerLogin
+    testcase: testcases/provider/provider_login.yml
+    parameters:   #参数化医生用户名密码
+        name-password-responseText: ${P(data/provider/providerLoginData.csv)}
+- #医生端首页
+    name: providerHomePage
+    testcase: testcases/provider/provider_homePage.yml
+    parameters:   #参数化患者信息
+        name-password-providerUserXID: ${P(data/provider/providerInfo.csv)}
+        meishengmang: ${P(data/provider/providerGroup.csv)}
+- #医生端患者管理
+    name: providerManagePatient
+    testcase: testcases/provider/managePatient.yml
+    parameters:   #参数化患者信息
+        patientXID-patientName: ${P(data/patient/patientInfo.csv)}
+        name-password-providerUserXID-providerXID-baseTag: ${P(data/provider/providerInfo.csv)}

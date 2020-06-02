@@ -1,0 +1,49 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取当前登录的机构组第一页健康资讯（前20条）
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            pageIndex: '1'
+            pageSize: '20'
+        url: /XHealthWebService/XTopic/topic/list
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取首页icon配置信息
+    request:
+        headers:
+            Content-Type: application/json
+            OrganizationUnitXID: '1048601'
+            TOKEN: $token
+        json:
+        - '500500003'
+        - '501700004'
+        - '500900001'
+        - '301900004'
+        method: POST
+        url: /XHealthWebService/XConfiguration/configuration/provider/complex/getConfigurationListByXIDList
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'

@@ -1,0 +1,17 @@
+config:
+    name: testcase description
+    variables: {}
+teststeps:
+-   name: 患者登陆-$responseText
+    request:
+        headers:
+            Content-Type: application/json
+        json:
+            mobileNumber: '$name'
+            securityCode: $password
+        method: POST
+        url: /XHealthWebService/XAuthentication/XPatientAuthentication/login
+    validate:
+    -   eq:
+        - content.responseText
+        - $responseText

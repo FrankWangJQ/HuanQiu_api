@@ -1,0 +1,202 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:  搜索患者-$patientName
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatient/patient/searchResult/$patientName
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:  搜索患者-$patientXID
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatient/patient/searchResult/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 转诊权限
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XReferral/referral/configuration/isReferralEnabled
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 是否收藏
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/patient/$patientXID/isFavorite
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 查看医生名下的标签列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/patient/$patientXID/tag/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 新建患者
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            birthDay: '2020-05-24'
+            familyName: ''
+            fullName: ${random_name()}
+            gender: 4
+            givenName: ''
+            mobileNumber: '${newPhoneNumber()}'
+        method: POST
+        url: /XHealthWebService/XProvider/provider/patient/
+#    extract:
+#    -   newPatientNameCN: content.data.nameCN
+#    -   newPatientUserXID: content.data.userXID.stringValue
+#    -   newPatientPhone: content.data.loginMobileNumber
+#    -   newPatientXID: content.data.XID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:  查看患者消息未读数（消息中心）
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XMessage/provider/$providerXID/count/unread
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 查看未处理的问诊
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XVisit/providerVisit/list/unconsulted/badge
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者标签列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/patient/$patientXID/tag/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者头像
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatientPersonInfo/patientPersonDetail/photo/$patientXID
+    validate:
+    -   eq:
+        - status_code
+        - 200
+-   name: 获取基础标签？
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/baseTagList/$providerXID/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 给患者打标签
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            baseTagList: '$baseTag'
+            patientXID: '$patientXID'
+        method: POST
+        url: /XHealthWebService/XProvider/provider/tagging
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 查看患者标签列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/patient/$patientXID/tag/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

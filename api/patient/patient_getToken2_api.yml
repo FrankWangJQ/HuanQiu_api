@@ -1,0 +1,10 @@
+name: 获取登录机构组下该患者的配置信息(获取机构组token)
+request:
+    headers:
+        TOKEN: $base_token
+    method: GET
+    url: /XHealthWebService/XAuthentication/XPatientAuthentication/token/$patientXID/$meishengmang
+validate:
+-   eq:
+    - content.responseCode
+    - 200

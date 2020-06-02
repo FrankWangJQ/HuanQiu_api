@@ -1,0 +1,14 @@
+teststeps:
+-   name: 测试医生登陆login接口-$responseText
+    request:
+        headers:
+            Content-Type: application/json
+        json:
+            mobileNumber: $name
+            securityCode: $password
+        method: POST
+        url: /XHealthWebService/XAuthentication/XProviderAuthentication/login
+    validate:
+    -   eq:
+        - content.responseText
+        - $responseText

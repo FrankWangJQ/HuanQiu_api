@@ -1,0 +1,39 @@
+
+config:
+    name: "testPatient"
+    base_url: "https://micro-stage.unihealths.com/micro-stage"
+
+testcases:  #将用例进行分层组装，参数化
+- #患者端登陆
+    name: patientLogin
+    testcase: testcases/patient/patient_login.yml
+    parameters:   #参数化患者用户名密码
+        name-password-responseText: ${P(data/patient/patientLoginData.csv)}
+- #患者端首页
+    name: patientHomePage
+    testcase: testcases/patient/patient_homePage.yml
+    parameters:  #对应测试环境数据
+        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
+        meishengmang: ${P(data/patient/patientGroup.csv)}
+- #患者端搜索框搜索医生
+    name: searchProvider
+    testcase: testcases/patient/patient_searchProvider.yml
+    parameters:   #参数化医生
+        searchData: ['王','甲状腺','妇科']
+        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
+        meishengmang: ${P(data/patient/patientGroup.csv)}
+        providerXID: ${P(data/provider/providerInfo.csv)}
+- #患者端查看医生首页
+    name: providerHomePage
+    testcase: testcases/patient/patient_providerHomePage.yml
+    parameters:   #参数化医生
+        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
+        meishengmang: ${P(data/patient/patientGroup.csv)}
+        providerXID: ${P(data/provider/providerInfo.csv)}
+- #患者端通过筛选条件搜索医生
+    name: searchProviderByCondition
+    testcase: testcases/patient/patient_searchProviderByCondition.yml
+    parameters:   #参数化医生
+        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
+        meishengmang-keshiID-specialtyXID: ${P(data/patient/patientGroup.csv)}
+        providerXID: ${P(data/provider/providerInfo.csv)}
