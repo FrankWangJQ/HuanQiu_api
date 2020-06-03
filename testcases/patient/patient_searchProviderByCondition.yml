@@ -92,7 +92,7 @@ teststeps:
         headers:
             TOKEN: $token
         method: GET
-        url: /XHealthWebService/XSpecialty/specialty/list/$specialtyXID
+        url: /XHealthWebService/XSpecialty/specialty/list/hrunh
     validate:
     -   eq:
         - content.responseText

@@ -17,7 +17,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XHealthRecord/XAllergy/list/$patientXID
+-   name: 获取患者过敏史信息
     request:
         headers:
             TOKEN: $token
@@ -30,7 +30,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XHealthRecord/XProblem/list/100/4579
+-   name: 病人当前疾病
     request:
         headers:
             TOKEN: $token
@@ -43,7 +43,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XHealthRecord/XProblem/list/110/4579
+-   name: 既往病史
     request:
         headers:
             TOKEN: $token
@@ -56,7 +56,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XHealthRecord/XImmunization/list/4579
+-   name: 免疫史
     request:
         headers:
             TOKEN: $token
@@ -69,7 +69,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XHealthRecord/XFamilyHistory/list/4579
+-   name: 病人家族史
     request:
         headers:
             TOKEN: $token
@@ -82,7 +82,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XHealthRecord/XPersonalHistory/list/4579
+-   name: 病人个人史
     request:
         headers:
             TOKEN: $token
@@ -95,7 +95,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XAppointment/appointment/appointmentList/4579
+-   name: 预约挂号记录
     request:
         headers:
             TOKEN: $token
@@ -108,7 +108,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XProvider/provider/patient/4579/visitList
+-   name: 病人问诊列表
     request:
         headers:
             TOKEN: $token
@@ -121,7 +121,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XProvider/provider/complex/getProviderListByProviderXIDList
+-   name: 问诊列表医生信息
     request:
         headers:
             Content-Type: application/json
@@ -138,32 +138,32 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XVisitReason/visitReason/list/getVisitReasonsByVisitXIDList
-    request:
-        headers:
-            Content-Type: application/json
-            TOKEN: $token
-        json:
-        - 21408
-        - 21385
-        - 21381
-        - 21271
-        - 21262
-        - 21237
-        - 21232
-        - 21215
-        - 21212
-        - 21143
-        method: POST
-        url: /XHealthWebService/XVisitReason/visitReason/list/getVisitReasonsByVisitXIDList
-    validate:
-    -   eq:
-        - content.responseText
-        - 获取信息成功
-    -   eq:
-        - content.responseCode
-        - '200'
--   name: /micro-stage/XHealthWebService/XReferral/referral/patientReferralList/4579
+#-   name: 根据问诊ID获取问诊原因
+#    request:
+#        headers:
+#            Content-Type: application/json
+#            TOKEN: $token
+#        json:
+#        - 21408
+#        - 21385
+#        - 21381
+#        - 21271
+#        - 21262
+#        - 21237
+#        - 21232
+#        - 21215
+#        - 21212
+#        - 21143
+#        method: POST
+#        url: /XHealthWebService/XVisitReason/visitReason/list/getVisitReasonsByVisitXIDList
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+-   name: 或者病人转诊列表
     request:
         headers:
             TOKEN: $token
@@ -176,7 +176,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: /micro-stage/XHealthWebService/XMedicationOrder/medicationOrder/electronicPrescriptionList/4579
+-   name: 病人处方记录
     request:
         headers:
             TOKEN: $token
