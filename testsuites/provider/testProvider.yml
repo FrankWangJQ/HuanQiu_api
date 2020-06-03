@@ -4,40 +4,46 @@ config:
     base_url: "https://micro-stage.unihealths.com/micro-stage"
 
 testcases:  #将用例进行分层组装，参数化
-#-
-#    name: providerLogin #医生登陆
-#    testcase: testcases/provider/provider_login.yml
-#    parameters:   #参数化医生用户名密码
-#        name-password-responseText: ${P(data/provider/providerLoginData.csv)}
-#-
-#    name: providerHomePage #医生端首页
-#    testcase: testcases/provider/provider_homePage.yml
-#    parameters:   #参数化患者信息
-#        name-password-providerUserXID: ${P(data/provider/providerInfo.csv)}
-#        meishengmang: ${P(data/provider/providerGroup.csv)}
-#-
-#    name: providerManagePatient #医生端患者管理
-#    testcase: testcases/provider/managePatient.yml
-#    parameters:   #参数化患者信息
-#        patientXID-patientName: ${P(data/patient/patientInfo.csv)}
-#        name-password-providerUserXID-providerXID-baseTag: ${P(data/provider/providerInfo.csv)}
-#        meishengmang: ${P(data/provider/providerGroup.csv)}
-#-
-#    name: provider_patientDetailPage #医生端查看患者详情
-#    testcase: testcases/provider/provider_patientDetailPage.yml
-#    parameters:   #参数化患者信息
-#        patientXID: ${P(data/patient/patientInfo.csv)}
-#        name-password-providerUserXID-providerXID: ${P(data/provider/providerInfo.csv)}
-#        meishengmang: ${P(data/provider/providerGroup.csv)}
-#-
-#    name: provider_myRatingPage #医生端查看我的评价
-#    testcase: testcases/provider/provider_myRating.yml
-#    parameters:   #参数化患者信息
-#        name-password-providerUserXID-providerXID: ${P(data/provider/providerInfo.csv)}
-#        meishengmang: ${P(data/provider/providerGroup.csv)}
+-
+    name: providerLogin #医生登陆
+    testcase: testcases/provider/provider_login.yml
+    parameters:   #参数化医生用户名密码
+        name-password-responseText: ${P(data/provider/providerLoginData.csv)}
+-
+    name: providerHomePage #医生端首页
+    testcase: testcases/provider/provider_homePage.yml
+    parameters:   #参数化患者信息
+        name-password-providerUserXID: ${P(data/provider/providerInfo.csv)}
+        meishengmang: ${P(data/provider/providerGroup.csv)}
+-
+    name: providerManagePatient #医生端患者管理
+    testcase: testcases/provider/managePatient.yml
+    parameters:   #参数化患者信息
+        patientXID-patientName: ${P(data/patient/patientInfo.csv)}
+        name-password-providerUserXID-providerXID-baseTag: ${P(data/provider/providerInfo.csv)}
+        meishengmang: ${P(data/provider/providerGroup.csv)}
+-
+    name: provider_patientDetailPage #医生端查看患者详情
+    testcase: testcases/provider/provider_patientDetailPage.yml
+    parameters:   #参数化患者信息
+        patientXID: ${P(data/patient/patientInfo.csv)}
+        name-password-providerUserXID-providerXID: ${P(data/provider/providerInfo.csv)}
+        meishengmang: ${P(data/provider/providerGroup.csv)}
+-
+    name: provider_myRatingPage #医生端查看我的评价
+    testcase: testcases/provider/provider_myRating.yml
+    parameters:   #参数化患者信息
+        name-password-providerUserXID-providerXID: ${P(data/provider/providerInfo.csv)}
+        meishengmang: ${P(data/provider/providerGroup.csv)}
 -
     name: provider_personalHomepage #医生端查看"我的"页面
     testcase: testcases/provider/provider_personalHomepage.yml
+    parameters:   #参数化患者信息
+        name-password-providerUserXID-providerXID: ${P(data/provider/providerInfo.csv)}
+        meishengmang: ${P(data/provider/providerGroup.csv)}
+-
+    name: provider_personalHomepage #医生端常用设置项
+    testcase: testcases/provider/provider_setting.yml
     parameters:   #参数化患者信息
         name-password-providerUserXID-providerXID: ${P(data/provider/providerInfo.csv)}
         meishengmang: ${P(data/provider/providerGroup.csv)}

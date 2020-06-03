@@ -1,0 +1,397 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生操作规范内容
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XConfiguration/configuration/provider/complex/getSpecification
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取问题答疑内容
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XConfiguration/configuration/provider/complex/getQuestionAnswer
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 关于我们
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 电子签章设置
+    request:
+        headers:
+            Content-Type: application/json
+            OrganizationUnitXID: $meishengmang
+            TOKEN: $token
+        json:
+        - '302100004'
+        method: POST
+        url: /XHealthWebService/XConfiguration/configuration/provider/complex/getConfigurationListByXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 用户访问权限
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XAccess/access/element/providerNote
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 更新医生信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 设置勿扰时间
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            isNoDisturb: true
+            noDisturbEndTime: 00:01:00
+            noDisturbStartTime: 00:00:00
+        method: POST
+        url: /XHealthWebService/XProvider/provider/noDisturbConfiguration
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 更新医生信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 更新问诊次数配置
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            isOpenPatientNarrativeVisitNoteCountLimit: '1'
+            patientNarrativeVisitNoteCountForProvider: '20'
+        method: POST
+        url: /XHealthWebService/XConfiguration/configuration/provider/configurationForProvider/update
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取图文问诊次数配置
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XConfiguration/configuration/provider/configurationForProvider
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 搜索常用诊断
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            pageIndex: '1'
+            pageSize: '50'
+        url: /XHealthWebService/XDiagnosis/search/感冒
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 新增常用诊断
+    request:
+        data: ''
+        headers:
+            TOKEN: $token
+        method: POST
+        url: /XHealthWebService/XDiagnosis/optional/baseDiagnosis/9747
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:  更新医生常用诊断list
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XDiagnosis/optional/diagnosisList
+    extract:
+    -   diagnosisID: '"stringValue":"(.*?)"},"baseEntity"'
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 删除常用诊断
+    request:
+        headers:
+            TOKEN: $token
+        method: DELETE
+        url: /XHealthWebService/XDiagnosis/optional/preference/$diagnosisID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生常用诊断list
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XDiagnosis/optional/diagnosisList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 搜索常用药品数量，关键字：感冒
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            query: 感冒
+        url: /XHealthWebService/XMedication/medication/list/totalCount
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 搜索常用药品列表，关键字：感冒
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            pageIndex: '1'
+            pageSize: '20'
+            query: 感冒
+        url: /XHealthWebService/XMedication/medication/list
+    extract:
+    -   baseMedicationXID: 'XID":"(.*?)"},{"unitPrice":null,"displayedName":"感冒解毒颗粒"'
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 添加医生常用药
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            baseMedicationXID: $baseMedicationXID
+            userXID: '1048679'
+        method: POST
+        url: /XHealthWebService/XMedication/medication/option
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 删除医生常用药
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            baseMedicationXID: $baseMedicationXID
+            userXID: '1048679'
+        method: DELETE
+        url: /XHealthWebService/XMedication/medication/option
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 展示医生常用药
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XMedication/medication/list/user/1048679/option
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生电子签名账户
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/signatureAccountID/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生电子签名
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/signatureSeal/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 新增医生常用回复
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+        - 你好
+        method: POST
+        url: /XHealthWebService/XProvider/providerNote/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生常用回复列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/providerNote/list/$providerXID
+    extract:
+    -   providerNoteID: '"XID":"(.*?)"},{"providerXID"'
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 删除医生常用回复
+    request:
+        headers:
+            TOKEN: $token
+        method: DELETE
+        url: /XHealthWebService/XProvider/providerNote/$providerNoteID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 更新医生常用回复列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/providerNote/list/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
