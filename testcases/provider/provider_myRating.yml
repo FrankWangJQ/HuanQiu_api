@@ -1,0 +1,84 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生评价百分比信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XRating/rating/allRatingPercentage/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 全部评价列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/0/false/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生评价标签
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XRating/rating/tag/list/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 好评列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/3/false/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 差评列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XRating/rating/list/provider/$providerXID/5/false/0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

@@ -1,0 +1,186 @@
+teststeps:
+-   name: 获取登陆base_token
+    api: api/provider/provider_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构组token
+    variables:
+        base_token: $base_token
+    api: api/provider/provider_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:  获取医生首页月收入、月问诊量、好评率
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XBilling/providerBill/currentMonthSummary/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生个人信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 医生是否具有调节上下线的权限
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/complex/isOnlineStatusConfigurationViewable
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生是否具有排班及控制服务的权限
+    request:
+        headers:
+            Content-Type: application/json
+            OrganizationUnitXID: $meishengmang
+            TOKEN: $token
+        json:
+        - '503500005'
+        - '503400004'
+        - '500300010'
+        - '500300011'
+        method: POST
+        url: /XHealthWebService/XConfiguration/configuration/provider/complex/getConfigurationListByXIDList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取当前版本更新信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XAppVersion/versionUpdateInfo/appKey/providerythg.iOS/currentVersionNumber/5.0.0
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 医生在线状态配置
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            isOnline: false
+        method: POST
+        url: /XHealthWebService/XProvider/provider/onlineStatusConfiguration
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生个人擅长信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XSpecialty/providerExpertise/list/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 编辑医生个人简介
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            XID: '4190'
+            academicRankXID:
+                stringValue: '3'
+            comment: 10年从医工作经历，在心脑血管，高血压，糖尿病方面有独特的医疗方案
+            licenseTypeXID:
+                stringValue: '3'
+        method: POST
+        url: /XHealthWebService/XProvider/provider
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 搜索擅长：心脏
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XSpecialty/specialty/commonHealthIssue/list/provider/$providerXID/queryCriteria/心脏
+    extract:
+    -   commonHealthIssueXID: '"XID":"(.*?)","nameCN"'
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 编辑保存医生擅长
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+        -   commonHealthIssueXID:
+                stringValue: $commonHealthIssueXID
+        method: POST
+        url: /XHealthWebService/XSpecialty/providerExpertise/list/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取医生更新后的个人信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProvider/provider/$providerXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
