@@ -1,0 +1,121 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 根据机构组ID获取体检项目套餐
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPhysicalExam/physicalExam/organizationGroup/$organizationGroup/appointmentOrganizationUnitList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取体检注意事项
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPhysicalExam/physicalExam/organizationUnit/$organizationGroup/appointmentNotice
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取体检项目列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPhysicalExam/physicalExam/organizationUnit/$organizationGroup/physicalExamTypeList
+    extract:
+    -   physicalExamType: content.data.0.XID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 体检可选时段
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPhysicalExam/physicalExam/organizationUnit/$organizationGroup/physicalExamType/1099511627796/scheduleInformation
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 创建体检预约
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            date: '${tomorrow()}'
+            organizationXID: $organizationGroup
+            patientXID: $patientXID
+            physicalExamSchedulePlanXID: '4121'
+            physicalExamType: $physicalExamType
+        method: POST
+        url: /XHealthWebService/XPhysicalExam/physicalExam/physicalExam
+    extract:
+    -   physicalExamXID: content.data.objVisit.XID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 查看体检列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPhysicalExam/physicalExam/patient/$patientXID/AppointmentList
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 删除体检预约项目
+    request:
+        headers:
+            TOKEN: $token
+        method: DELETE
+        url: /XHealthWebService/XPhysicalExam/physicalExam/physicalExam/$physicalExamXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

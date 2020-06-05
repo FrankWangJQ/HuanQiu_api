@@ -24,7 +24,7 @@ teststeps:
             TOKEN: $token
         json:
             freeClinic: false
-            hospitalID: $meishengmang
+            hospitalID: $organizationUnitXID
             licenseID: ''
             maxPrice: ''
             minPrice: ''

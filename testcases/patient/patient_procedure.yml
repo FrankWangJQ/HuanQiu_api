@@ -1,0 +1,71 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取病人详情
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatient/patient/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取检查报告
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProcedure/procedure/list/procedureType/3/patientIdTypeId/3/patientId/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取检验报告
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProcedure/procedure/list/procedureType/4/patientIdTypeId/4/patientId/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取体检报告
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XProcedure/procedure/list/procedureType/5/patientIdTypeId/5/patientId/$patientXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'

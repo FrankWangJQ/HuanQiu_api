@@ -1,0 +1,196 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取家庭成员列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatient/patient/familyMember/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取病案复印提示信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/MedicalRecordRelease/InformedConsentNote
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取机构详情
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XOrganizationUnit/organizationSummary
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取复印信息选项数据：复印用途、复印材料
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/MedicalRecordRelease/configuration
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者邮寄地址
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/MedicalRecordRelease/address/organizationUnit/$organizationUnitXID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取患者地址列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XPatientPersonInfo/patientAddress/list
+    extract:
+    -   addressXID: '"XID":"(.*?)"'
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 创建病案复印订单(邮寄/自提)
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: $token
+        json:
+            addressXID: $addressXID
+            comment: 无特殊要求
+            copyCount: '1'
+            delivery: $delivery
+            departmentName: 心内科
+            endDate: ${getTomorrow()}
+            externalVisitSourceId: '1234'
+            noteType:
+            - 入院记录
+            - 出院记录
+            - 病例首页(正面)
+            organizationUnitXID: '1048601'
+            patientXID: $patientXID
+            purpose: 新农合报销
+            startDate: ${getToday()}
+        method: POST
+        url: /XHealthWebService/MedicalRecordRelease/create
+    extract:
+    -   MedicalRecordID: content.data.XID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 病案复印待支付
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/MedicalRecordRelease/$MedicalRecordID
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取支付方式列表
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        url: /XHealthWebService/XBilling/patientBill/pay/method/enabled/list
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+#-   name: 微信支付
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XBilling/patientBill/pay/unifiedorder/bill/21112/method/4
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name: 返回支付状态
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XBilling/patientBill/status/bill/21112/method/4
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name: 获取订单信息及支付状态（已支付）
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/MedicalRecordRelease/MedicalRecordID
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'

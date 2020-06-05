@@ -1,0 +1,65 @@
+config:
+    name: testcase description
+    variables: {}
+teststeps:
+-   name: /micro-stage/XHealthWebService/MedicalRecordRelease/create
+    request:
+        headers:
+            Content-Type: application/json
+            TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJERVZJQ0UiOm51bGwsIlVzZXJYSUQiOiIxMDUyNTUwIiwiZXhwIjoxNTkyNTUwNjYzLCJpYXQiOjE1OTEzNDEwNjMsIk9yZ2FuaXphdGlvblVuaXRYSUQiOiIxMDQ4NjUwIn0.rqFgCCVp_PVGNpFpzqfKJ0I5CtKSwMHUIHTKj7rm6BI
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        json:
+            addressXID: ''
+            comment: 无
+            copyCount: '1'
+            delivery: false
+            departmentName: 无
+            endDate: '2020-06-05'
+            externalVisitSourceId: '1234'
+            noteType:
+            - 病例首页(正面)
+            organizationUnitXID: '1048601'
+            patientXID: '4579'
+            purpose: 新农合报销
+            startDate: '2020-06-05'
+        method: POST
+        url: https://micro-stage.unihealths.com/micro-stage/XHealthWebService/MedicalRecordRelease/create
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json;charset=UTF-8
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+    -   eq:
+        - content.timestamp
+        - 1591341127709
+-   name: /micro-stage/XHealthWebService/MedicalRecordRelease/4374
+    request:
+        headers:
+            TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJERVZJQ0UiOm51bGwsIlVzZXJYSUQiOiIxMDUyNTUwIiwiZXhwIjoxNTkyNTUwNjYzLCJpYXQiOjE1OTEzNDEwNjMsIk9yZ2FuaXphdGlvblVuaXRYSUQiOiIxMDQ4NjUwIn0.rqFgCCVp_PVGNpFpzqfKJ0I5CtKSwMHUIHTKj7rm6BI
+            User-Agent: SV huan qiu jian kang/5.0.0 (iPhone; iOS 13.3.1; Scale/2.00)
+        method: GET
+        url: https://micro-stage.unihealths.com/micro-stage/XHealthWebService/MedicalRecordRelease/4374
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json;charset=UTF-8
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+    -   eq:
+        - content.timestamp
+        - 1591341127881

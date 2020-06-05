@@ -2,16 +2,21 @@
 #_*_coding:UTF-8_*_
 import time
 import random
+import datetime
 
+
+#休眠
 def sleep(n_secs):
     time.sleep(n_secs)
+
+#随机电话
 def newPhoneNumber():
     str_start = random.choice(['135', '136', '138','139','166','180','181','185','186','188'])
     str_end = ''.join(random.sample('0123456789', 8))
     str_phone = str_start + str_end
     return (str_phone)
 
-
+#随机姓名
 def random_name():
     # 删减部分，比较大众化姓氏
     firstName = "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻水云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳鲍史唐费岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅卞齐康伍余元卜顾孟平" \
@@ -52,3 +57,17 @@ def random_name():
         if random.choice(range(2)) > 0:
             name_1 = name[random.choice(range(len(name)))]
         return firstName_name + name_1 + boy_name
+
+#当前日期
+def getToday():
+    today = time.strftime("%Y-%m-%d")
+
+    return today
+
+
+#当前日期的后一天
+def getTomorrow():
+    now_time = datetime.datetime.now()
+    tomorrow = (now_time+datetime.timedelta(days=+1)).strftime("%Y-%m-%d")
+
+    return tomorrow

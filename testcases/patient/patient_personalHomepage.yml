@@ -1,0 +1,121 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+#-   name: 获取ios更新信息
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XAppVersion/versionUpdateInfo/appKey/patientythg.iOS/currentVersionNumber/$version
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name: 获取患者个人信息
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XPatient/patient/$patientXID
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name:  获取患者家庭成员列表
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XPatient/patient/familyMember/list
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name: 获取患者收获地址列表
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XPatientPersonInfo/patientAddress/address/list
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name: 增加收获地址
+#    request:
+#        headers:
+#            Content-Type: application/json
+#            TOKEN: $token
+#        json:
+#            code: ''
+#            contactName: 张三
+#            contactPhone: '18511086263'
+#            isDefault: true
+#            text: 西直门六号
+#            typeXID: ''
+#            unitXID: '104'
+#        method: POST
+#        url: /XHealthWebService/XPatientPersonInfo/patientAddress/save
+#    extract:
+#    -   addressXID: '"XID":"(.*?)"}'
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name: 删除收获地址
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: DELETE
+#        url: /XHealthWebService/XPatientPersonInfo/patientAddress/remove/$addressXID
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'
+#-   name:  更新患者收获地址列表
+#    request:
+#        headers:
+#            TOKEN: $token
+#        method: GET
+#        url: /XHealthWebService/XPatientPersonInfo/patientAddress/list
+#    validate:
+#    -   eq:
+#        - content.responseText
+#        - 获取信息成功
+#    -   eq:
+#        - content.responseCode
+#        - '200'

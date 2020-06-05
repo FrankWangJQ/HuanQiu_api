@@ -2,38 +2,73 @@
 config:
     name: "testPatient"
     base_url: "https://micro-stage.unihealths.com/micro-stage"
+    variables:
+        name: "18511086263"
+        password: "qwer1234"
+        providerUserXID: "1048670"
+        providerXID: "4190"
+        organizationUnitXID: "1048650"  #美圣芒机构
+        organizationGroup: '1048601'  #美中美机构组
+        baseTag: "1099511627791"  #患者标签ID
+        patientXID: "4579"
+        patientName: "张涛"
+        keshiID: "1048601"
+        specialtyXID: "101"  #二级科室
+        version: 5.0
 
-testcases:  #将用例进行分层组装，参数化
+testcases:
 - #患者端登陆
-    name: patientLogin
+    name: patient_Login
     testcase: testcases/patient/patient_login.yml
     parameters:   #参数化患者用户名密码
         name-password-responseText: ${P(data/patient/patientLoginData.csv)}
+
 - #患者端首页
-    name: patientHomePage
+    name: patient_HomePage
     testcase: testcases/patient/patient_homePage.yml
-    parameters:  #对应测试环境数据
-        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
-        meishengmang: ${P(data/patient/patientGroup.csv)}
+
 - #患者端搜索框搜索医生
-    name: searchProvider
+    name: patient_searchProvider
     testcase: testcases/patient/patient_searchProvider.yml
-    parameters:   #参数化医生
+    parameters:   #搜索条件
         searchData: ['王','甲状腺','妇科']
-        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
-        meishengmang: ${P(data/patient/patientGroup.csv)}
-        providerXID: ${P(data/provider/providerInfo.csv)}
+
 - #患者端查看医生首页
-    name: providerHomePage
+    name: patient_providerHomePage
     testcase: testcases/patient/patient_providerHomePage.yml
-    parameters:   #参数化医生
-        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
-        meishengmang: ${P(data/patient/patientGroup.csv)}
-        providerXID: ${P(data/provider/providerInfo.csv)}
+
 - #患者端通过筛选条件搜索医生
-    name: searchProviderByCondition
+    name: patient_searchProviderByCondition
     testcase: testcases/patient/patient_searchProviderByCondition.yml
-    parameters:   #参数化医生
-        name-password-patientXID: ${P(data/patient/patientInfo.csv)}
-        meishengmang-keshiID-specialtyXID: ${P(data/patient/patientGroup.csv)}
-        providerXID: ${P(data/provider/providerInfo.csv)}
+
+- #患者端查看个人中心
+    name: patient_personalHomepage
+    testcase: testcases/patient/patient_personalHomepage.yml
+
+- #患者端病案复印
+    name: patient_medicalRecordRelease
+    testcase: testcases/patient/patient_medicalRecordRelease.yml
+    parameters:
+    -   delivery: ['true','false']  #true:邮寄  false:自提
+
+- #患者端住院预交金
+    name: patient_prepayableInpatient
+    testcase: testcases/patient/patient_prepayableInpatient.yml
+    variables:
+    -   personalIDCard: 210902199205194518  #刘思宇  18518757193
+
+- #患者端检查检验体检报告查询
+    name: patient_procedure
+    testcase: testcases/patient/patient_procedure.yml
+
+- #患者端查看科室简介
+    name: patient_organizationUnit
+    testcase: testcases/patient/patient_organizationUnit.yml
+
+- #患者端查看健康资讯
+    name: patient_topic
+    testcase: testcases/patient/patient_topic.yml
+
+- #患者端体检预约
+    name: patient_physicalExam
+    testcase: testcases/patient/patient_physicalExam.yml

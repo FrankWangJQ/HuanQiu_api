@@ -60,7 +60,7 @@ teststeps:
     request:
         headers:
             Content-Type: application/json
-            OrganizationUnitXID: $meishengmang
+            OrganizationUnitXID: $organizationUnitXID
             TOKEN: $token
         json:
         - '302100004'
@@ -354,7 +354,7 @@ teststeps:
     -   eq:
         - content.responseCode
         - '200'
--   name: 获取医生常用回复列表
+-   name: 获取医生常用回复列表(获取NoteId时要求医生名下有一条常用回复的数据)
     request:
         headers:
             TOKEN: $token

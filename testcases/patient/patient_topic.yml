@@ -1,0 +1,87 @@
+teststeps:
+-   name: 获取登陆baseToken
+    api: api/patient/patient_getToken_api.yml
+    extract:
+    -   base_token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 获取登陆token
+    variables:
+        base_token: $base_token
+    api: api/patient/patient_getToken2_api.yml
+    extract:
+    -   token: content.data.token
+    validate:
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name: 病人获取第一页（前20条）健康资讯信息
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            pageIndex: '1'
+            pageSize: '20'
+        url: /XHealthWebService/XTopic/topic/list
+#    extract:
+#    -   topicXID: 4141
+    validate:
+    -   eq:
+        - content.responseText
+        - 获取信息成功
+    -   eq:
+        - content.responseCode
+        - '200'
+-   name:   查看某一条资讯 （资讯ID4141）
+    request:
+        headers:
+            TOKEN: $token
+        method: GET
+        params:
+            topicXID: '4141'
+        url: /faces/XHtml/XPublicHtml/XTopic/UHealthInfomationDetail_APP.xhtml
+    validate:
+    -   eq:
+        - status_code
+        - 200
+-   name: 查看资讯
+    request:
+        headers:
+        method: GET
+        params:
+            ln: primefaces-modena
+        url: /faces/javax.faces.resource/theme.css
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - text/css
+-   name: 查看资讯
+    request:
+        headers:
+        method: GET
+        params:
+            ln: primefaces
+            v: '6.2'
+        url: /faces/javax.faces.resource/validation/beanvalidation.js
+    validate:
+    -   eq:
+        - status_code
+        - 200
+-   name: 查看资讯
+    request:
+        headers:
+        method: GET
+        params:
+            ln: primefaces
+            v: '6.2'
+        url: /faces/javax.faces.resource/validation/validation.js
+    validate:
+    -   eq:
+        - status_code
+        - 200

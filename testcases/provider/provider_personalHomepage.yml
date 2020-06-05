@@ -60,7 +60,7 @@ teststeps:
     request:
         headers:
             Content-Type: application/json
-            OrganizationUnitXID: $meishengmang
+            OrganizationUnitXID: $organizationUnitXID
             TOKEN: $token
         json:
         - '503500005'

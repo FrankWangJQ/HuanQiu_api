@@ -27,13 +27,11 @@
 #    - eq: ["responseCode", '200']
 #
 name: 获取登录机构组下该医生的配置信息(获取机构组token)
-variables:  #对应测试环境数据
-    meishengmang: 1048605  #美圣芒机构组
 request:
     headers:
         TOKEN: $base_token
     method: GET
-    url: /XHealthWebService/XAuthentication/XProviderAuthentication/token/$providerUserXID/$meishengmang
+    url: /XHealthWebService/XAuthentication/XProviderAuthentication/token/$providerUserXID/$organizationUnitXID
 validate:
 -   eq:
     - content.responseCode

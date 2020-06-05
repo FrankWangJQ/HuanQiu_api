@@ -90,7 +90,7 @@ teststeps:
         params:
             pageIndex: '1'
             pageSize: '20'
-        url: /XHealthWebService/XFreeClinic/organizationGroup/$meishengmang/provider/pagedList
+        url: /XHealthWebService/XFreeClinic/organizationGroup/$organizationUnitXID/provider/pagedList
     validate:
     -   eq:
         - content.responseText
@@ -102,7 +102,7 @@ teststeps:
     request:
         headers:
             Content-Type: application/json
-            OrganizationUnitXID: $meishengmang
+            OrganizationUnitXID: $organizationUnitXID
             TOKEN: $token
         json:
         - '502500003'
@@ -139,7 +139,7 @@ teststeps:
         headers:
             TOKEN: $token
         method: GET
-        url: /XHealthWebService/XOrganizationUnit/organizationGroup/$meishengmang/specificDepartment/list
+        url: /XHealthWebService/XOrganizationUnit/organizationGroup/$organizationUnitXID/specificDepartment/list
     validate:
     -   eq:
         - content.responseText

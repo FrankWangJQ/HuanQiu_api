@@ -1,4 +1,4 @@
-name: 获取登陆base_token
+name: 获取病人登陆base_token
 request:
     headers:
         Content-Type: application/json
